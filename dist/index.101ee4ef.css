@@ -16,4 +16,19 @@ img {
   display: block;
 }
 
+.container {
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  display: flex;
+}
+
+.container > button {
+  width: 200px;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
 /*# sourceMappingURL=index.101ee4ef.css.map */
