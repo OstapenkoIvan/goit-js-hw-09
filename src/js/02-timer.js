@@ -8,9 +8,12 @@ const refs = {
   minutesEl: document.querySelector('[data-minutes]'),
   secondsEl: document.querySelector('[data-seconds]'),
   startBtnEl: document.querySelector('[data-start]'),
+  stopBtnEl: document.querySelector('[data-stop]'),
+  resetBtnEl: document.querySelector('[data-reset]'),
 };
 let date = new Date();
 let timeLeft = 0;
+let timerInterval = null;
 
 const options = {
   enableTime: true,
@@ -26,19 +29,23 @@ const options = {
     if (selectedDates[0] > date) {
       timeLeft = selectedDates[0].getTime() - date.getTime();
 
-      refs.startBtnEl.removeAttribute('disabled', '');
+      refs.startBtnEl.disabled = false;
     }
   },
 };
 flatpickr('#datetime-picker', options);
 
 refs.startBtnEl.addEventListener('click', convertMs);
+refs.stopBtnEl.addEventListener('click', stopCounter);
+refs.resetBtnEl.addEventListener('click', resetCounter);
 
 function convertMs(evt) {
-  let storageObj = {};
+  refs.startBtnEl.disabled = true;
+  refs.stopBtnEl.disabled = false;
+  refs.resetBtnEl.disabled = false;
   updateTime(timeLeft);
 
-  let timerInterval = setInterval(() => {
+  timerInterval = setInterval(() => {
     timeLeft = timeLeft - 1000;
 
     const second = 1000;
@@ -59,14 +66,6 @@ function convertMs(evt) {
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
     }
-
-    storageObj = {
-      days,
-      hours,
-      minutes,
-      seconds,
-    };
-    console.log(storageObj);
   }, 1000);
 }
 
@@ -88,11 +87,18 @@ function updateTime(timeLeft) {
   refs.hoursEl.textContent = addLeadingZero(hours);
   refs.minutesEl.textContent = addLeadingZero(minutes);
   refs.secondsEl.textContent = addLeadingZero(seconds);
+}
 
-  storageObj = {
-    days,
-    hours,
-    minutes,
-    seconds,
-  };
+function stopCounter(evt) {
+  refs.startBtnEl.disabled = false;
+  refs.stopBtnEl.disabled = true;
+  clearInterval(timerInterval);
+}
+
+function resetCounter(evt) {
+  refs.startBtnEl.disabled = true;
+  refs.resetBtnEl.disabled = true;
+  refs.stopBtnEl.disabled = true;
+  timeLeft = 0;
+  updateTime(timeLeft);
 }
