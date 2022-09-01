@@ -11,7 +11,7 @@ const refs = {
   stopBtnEl: document.querySelector('[data-stop]'),
   resetBtnEl: document.querySelector('[data-reset]'),
 };
-let date = new Date();
+
 let timeLeft = 0;
 let timerInterval = null;
 
@@ -22,6 +22,7 @@ const options = {
   minuteIncrement: 1,
   //   minDate: 'today',
   onClose(selectedDates) {
+    let date = new Date();
     if (selectedDates[0] <= date) {
       refs.startBtnEl.setAttribute('disabled', '');
       Notify.warning('Please choose a date in the future');
@@ -65,6 +66,8 @@ function convertMs(evt) {
 
     if (timeLeft <= 1000) {
       clearInterval(timerInterval);
+      refs.stopBtnEl.disabled = true;
+      refs.resetBtnEl.disabled = true;
     }
   }, 1000);
 }
