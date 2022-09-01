@@ -63,7 +63,7 @@ function convertMs(evt) {
     refs.minutesEl.textContent = addLeadingZero(minutes);
     refs.secondsEl.textContent = addLeadingZero(seconds);
 
-    if (timeLeft <= 0) {
+    if (timeLeft <= 1000) {
       clearInterval(timerInterval);
     }
   }, 1000);
@@ -99,6 +99,7 @@ function resetCounter(evt) {
   refs.startBtnEl.disabled = true;
   refs.resetBtnEl.disabled = true;
   refs.stopBtnEl.disabled = true;
+  clearInterval(timerInterval);
   timeLeft = 0;
   updateTime(timeLeft);
 }
